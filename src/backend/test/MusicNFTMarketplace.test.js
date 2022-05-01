@@ -8,6 +8,7 @@ describe("MusicNFTMarketplace", function () {
   let nftMarketplace
   let deployer, artist, user1, user2, users;
   let royaltyFee = toWei(0.01); // 1 ether = 10^18 wei
+  let membershipFee = toWei(1);
   let URI = "https://bafybeidhjjbjonyqcahuzlpt7sznmh4xrlbspa3gstop5o47l6gsiaffee.ipfs.nftstorage.link/"
   let prices = [toWei(1), toWei(2), toWei(3), toWei(4), toWei(5), toWei(6), toWei(7), toWei(8)]
   let deploymentFees = toWei(prices.length * 0.01)
@@ -19,6 +20,7 @@ describe("MusicNFTMarketplace", function () {
     // Deploy music nft marketplace contract 
     nftMarketplace = await NFTMarketplaceFactory.deploy(
       royaltyFee,
+      membershipFee,
       artist.address,
       prices,
       { value: deploymentFees }
@@ -35,6 +37,7 @@ describe("MusicNFTMarketplace", function () {
       expect(await nftMarketplace.symbol()).to.equal(nftSymbol);
       expect(await nftMarketplace.baseURI()).to.equal(URI);
       expect(await nftMarketplace.royaltyFee()).to.equal(royaltyFee);
+      expect(await nftMarketplace.membershipFee()).to.equal(membershipFee);
       expect(await nftMarketplace.artist()).to.equal(artist.address);
     });
 
@@ -165,6 +168,34 @@ describe("MusicNFTMarketplace", function () {
       // Check that the returned my items array is correct
       expect(myItems.every(i => ownedByUser2.some(j => j === i.tokenId.toNumber()))).to.equal(true)
       expect(ownedByUser2.length === myItems.length).to.equal(true)
+    });
+  });
+
+  describe("membership functions", function() {
+    const oldLen = 1
+    beforeEach(async function () {
+      await nftMarketplace.connect(user1).membership({value: toWei(1)});
+    })
+
+    it("must check the membership status", async function () {
+      await expect(
+        nftMarketplace.connect(user1).membership({value: toWei(1)})
+      ).to.be.revertedWith("You have already joined as a member!");
+    });
+
+    it("must pay membership fee", async function () {
+      await expect(
+        nftMarketplace.connect(user2).membership({value: 0})
+      ).to.be.revertedWith("Must pay membership fee!");
+    });
+
+    it("return the status of membership", async function () {
+      expect(
+        await nftMarketplace.connect(user1).checkMembers()
+      ).to.equal(true);
+      expect(
+        await nftMarketplace.connect(user2).checkMembers()
+      ).to.equal(false);
     });
   });
 })

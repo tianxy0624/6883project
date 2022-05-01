@@ -13,6 +13,7 @@ import logo from './logo.png'
 import Home from './Home.js'
 import MyTokens from './MyTokens.js'
 import MyResales from './MyResales.js'
+import MyAccount from './MyAccount.js'
 import './App.css';
 
 function App() {
@@ -41,9 +42,8 @@ function App() {
         <>
           <Navbar expand="lg" bg="secondary" variant="dark">
             <Container>
-              <Navbar.Brand href="http://www.dappuniversity.com/bootcamp">
-                <img src={logo} width="40" height="40" className="" alt="" />
-                &nbsp; Music NFT player
+              <Navbar.Brand>
+                Music NFT player
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
@@ -51,6 +51,7 @@ function App() {
                   <Nav.Link as={Link} to="/">Home</Nav.Link>
                   <Nav.Link as={Link} to="/my-tokens">My Tokens</Nav.Link>
                   <Nav.Link as={Link} to="/my-resales">My Resales</Nav.Link>
+                  <Nav.Link as={Link} to="/my-account">My Account</Nav.Link>
                 </Nav>
                 <Nav>
                   {account ? (
@@ -88,6 +89,9 @@ function App() {
               } />
               <Route path="/my-resales" element={
                 <MyResales contract={contract} account={account} />
+              } />
+              <Route path="/my-account" element={
+                <MyAccount contract={contract} account={account} />
               } />
             </Routes>
           )}

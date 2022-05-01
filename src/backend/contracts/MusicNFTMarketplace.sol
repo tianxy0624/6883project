@@ -10,6 +10,8 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
     string public baseExtension = ".json";
     address public artist;
     uint256 public royaltyFee;
+    uint256 public membershipFee;
+    address[] public members;
 
     struct MarketItem {
         uint256 tokenId;
@@ -33,6 +35,7 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
     /* In constructor we initalize royalty fee, artist address and prices of music nfts*/
     constructor(
         uint256 _royaltyFee,
+        uint256 _membershipFee,
         address _artist,
         uint256[] memory _prices
     ) payable {
@@ -42,6 +45,7 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
         );
         royaltyFee = _royaltyFee;
         artist = _artist;
+        membershipFee = _membershipFee;
         for (uint8 i = 0; i < _prices.length; i++) {
             require(_prices[i] > 0, "Price must be greater than 0");
             _mint(address(this), i);
@@ -112,5 +116,23 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
     /* Internal function that gets the baseURI initialized in the constructor */
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
+    }
+
+    function membership() external payable{
+        for (uint256 i = 0; i < members.length; i++){
+            require(members[i] != msg.sender, "You have already joined as a member!");
+        }
+
+        require(msg.value == membershipFee, "Must pay membership fee!");
+        members.push(msg.sender);
+    }
+
+    function checkMembers() external view returns (bool) {
+        for (uint256 i = 0; i < members.length; i++){
+            if (members[i] == msg.sender){
+                return true;
+            }
+        }
+        return false;
     }
 }

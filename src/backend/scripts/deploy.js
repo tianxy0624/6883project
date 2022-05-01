@@ -1,6 +1,7 @@
 async function main() {
   const toWei = (num) => ethers.utils.parseEther(num.toString())
   let royaltyFee = toWei(0.01);
+  let membershipFee = toWei(1);
   let prices = [toWei(1), toWei(2), toWei(3), toWei(4), toWei(5), toWei(6), toWei(7), toWei(8)]
   let deploymentFees = toWei(prices.length * 0.01)
   const [deployer, artist] = await ethers.getSigners();
@@ -12,6 +13,7 @@ async function main() {
   const NFTMarketplaceFactory = await ethers.getContractFactory("MusicNFTMarketplace");
   nftMarketplace = await NFTMarketplaceFactory.deploy(
     royaltyFee,
+    membershipFee,
     artist.address,
     prices,
     { value: deploymentFees }
