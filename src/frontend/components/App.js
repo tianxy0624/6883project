@@ -8,18 +8,21 @@ import { useState } from 'react'
 import { ethers } from "ethers"
 import MusicNFTMarketplaceAbi from '../contractsData/MusicNFTMarketplace.json'
 import MusicNFTMarketplaceAddress from '../contractsData/MusicNFTMarketplace-address.json'
-import { Spinner, Navbar, Nav, Button, Container } from 'react-bootstrap'
+import { Spinner, Navbar, Nav, Button, Container, Form, FormGroup, FormControl } from 'react-bootstrap'
 import logo from './logo.png'
 import Home from './Home.js'
 import MyTokens from './MyTokens.js'
 import MyResales from './MyResales.js'
 import MyAccount from './MyAccount.js'
+import Search from "./Search.js";
 import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(true)
   const [account, setAccount] = useState(null)
   const [contract, setContract] = useState({})
+
+  const [searchedSong, setSearchedSong] = useState('')
 
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -52,6 +55,16 @@ function App() {
                   <Nav.Link as={Link} to="/my-tokens">My Tokens</Nav.Link>
                   <Nav.Link as={Link} to="/my-resales">My Resales</Nav.Link>
                   <Nav.Link as={Link} to="/my-account">My Account</Nav.Link>
+                  <Form className="d-flex" >
+                    <FormControl
+                      type="search"
+                      placeholder="Search"
+                      className="me-2"
+                      aria-label="Search"
+                      onChange={(e) => setSearchedSong(e.target.value)}
+                    />
+                    <Button as={Link} to='/search' variant="outline-light" >Search</Button>
+                  </Form>
                 </Nav>
                 <Nav>
                   {account ? (
@@ -92,6 +105,9 @@ function App() {
               } />
               <Route path="/my-account" element={
                 <MyAccount contract={contract} account={account} />
+              } />
+              <Route path="/search" element={
+                <Search contract={contract} searchedSong={searchedSong.toLowerCase()} />
               } />
             </Routes>
           )}
