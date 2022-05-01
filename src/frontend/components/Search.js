@@ -37,20 +37,6 @@ export default function Search({ contract,searchedSong }) {
       setLoading(false)
   }
 
-//   const searchItem = async() => {
-//       var current_index = 0;
-//       var selectedItems=new Array();
-//       for(var i=0;i<marketItems.length;i++)
-//       {
-//           var lowercaseItemName = marketItems[i].name.toLowerCase();
-//           if (lowercaseItemName.includes(searchedSong)){
-//               selectedItems[current_index] = marketItems[i];
-//               current_index ++;
-//           }
-//       }
-//       setSelectedItems(selectedItems)
-//   }
-
   const buyMarketItem = async (item) => {
     await (await contract.buyToken(item.itemId, { value: item.price })).wait()
     loadMarketplaceItems()
