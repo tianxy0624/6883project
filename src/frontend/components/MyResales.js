@@ -19,6 +19,7 @@ export default function MyResales({ contract, account }) {
     const listedItems = await Promise.all(results.map(async i => {
       // fetch arguments from each result
       i = i.args
+      if (i.tokenId != 3){
       // get uri url from nft contract
       const uri = await contract.tokenURI(i.tokenId)
       // use uri to fetch the nft metadata stored on ipfs 
@@ -34,6 +35,25 @@ export default function MyResales({ contract, account }) {
         identicon
       }
       return purchasedItem
+      }
+      else{
+        // get uri url from nft contract
+      const uri = await contract.tokenURI(i.tokenId)
+      // use uri to fetch the nft metadata stored on ipfs 
+      const response = await fetch(uri + ".json")
+      const metadata = await response.json()
+      const identicon = `data:image/png;base64,${new Identicon(metadata.name + 'cold' + metadata.price, 330).toString()}`
+      // define listed item object
+      let purchasedItem = {
+        price: i.price,
+        itemId: i.tokenId,
+        name: metadata.name,
+        audio: metadata.audio,
+        identicon
+      }
+      return purchasedItem
+      }
+      
     }))
     setListedItems(listedItems)
     // Fetch sold resale items by quering MarketItemBought events with the seller set as the user.

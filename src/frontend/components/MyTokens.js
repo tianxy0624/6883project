@@ -16,6 +16,7 @@ export default function MyTokens({ contract }) {
     // Get all unsold items/tokens
     const results = await contract.getMyTokens()
     const myTokens = await Promise.all(results.map(async i => {
+      if (i.tokenId != 3){
       // get uri url from contract
       const uri = await contract.tokenURI(i.tokenId)
       // use uri to fetch the nft metadata stored on ipfs 
@@ -32,6 +33,26 @@ export default function MyTokens({ contract }) {
         resellPrice: null
       }
       return item
+      }
+      else{
+      // get uri url from contract
+      const uri = await contract.tokenURI(i.tokenId)
+      // use uri to fetch the nft metadata stored on ipfs 
+      const response = await fetch(uri + ".json")
+      const metadata = await response.json()
+      const identicon = `data:image/png;base64,${new Identicon(metadata.name + 'cold' +metadata.price, 330).toString()}`
+      // define item object
+      let item = {
+        price: i.price,
+        itemId: i.tokenId,
+        name: metadata.name,
+        audio: metadata.audio,
+        identicon,
+        resellPrice: null
+      }
+      return item
+      }
+      
     }))
     setMyTokens(myTokens)
     setLoading(false)

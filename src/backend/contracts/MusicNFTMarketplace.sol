@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
     string public baseURI =
-        "https://bafybeidhjjbjonyqcahuzlpt7sznmh4xrlbspa3gstop5o47l6gsiaffee.ipfs.nftstorage.link/";
+        "https://bafybeifllu4aakiruzexvn6znzacm33d2oqv7jymteylro2n4r42dpoqvq.ipfs.nftstorage.link/";
     string public baseExtension = ".json";
     address public artist;
     uint256 public royaltyFee;
@@ -135,4 +135,12 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
         }
         return false;
     }
+
+    // function getDiscount() external{
+    //     for (uint8 i = 0; i < _prices.length; i++) {
+    //         require(_prices[i] > 0, "Price must be greater than 0");
+    //         _mint(address(this), i);
+    //         marketItems.push(MarketItem(i, payable(msg.sender), _prices[i]));
+    //     }
+    // }
 }

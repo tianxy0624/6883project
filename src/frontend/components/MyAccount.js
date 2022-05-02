@@ -32,7 +32,7 @@ export default function MyAccount({ contract, account }) {
         {membership == false?
           <div className="px-5 py-3 container">
             <>
-            <main style={{ padding: "1rem 0" }}>
+            <main style={{ padding: "1rem 13rem"}}>
             {[
                     'Secondary'
                 ].map((variant) => (
@@ -40,7 +40,7 @@ export default function MyAccount({ contract, account }) {
                     bg={variant.toLowerCase()}
                     key={variant}
                     text={variant.toLowerCase() === 'light' ? 'dark' : 'white'}
-                    style={{ width: '40rem' }}
+                    style={{ width: '40rem'}}
                     className="mb-2 "
                     >
                     <Card.Header>Membership</Card.Header>
