@@ -3,10 +3,10 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
+ 
 contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
     string public baseURI =
-        "https://bafybeifllu4aakiruzexvn6znzacm33d2oqv7jymteylro2n4r42dpoqvq.ipfs.nftstorage.link/";
+        "https://bafybeiaiawyhidkrzshi6745qwjdvtwuzbtcnb52ddnkpf5h3komuhpt2m.ipfs.nftstorage.link/";
     string public baseExtension = ".json";
     address public artist;
     uint256 public royaltyFee;

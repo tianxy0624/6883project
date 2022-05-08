@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { ethers } from "ethers"
-import Identicon from 'identicon.js';
 import { Row, Col, Card, Button, InputGroup, Form } from 'react-bootstrap'
 
 export default function Search({ contract,searchedSong }) {
@@ -15,46 +14,26 @@ export default function Search({ contract,searchedSong }) {
     // Get all unsold items/tokens
     const results = await contract.getAllUnsoldTokens()
     const marketItems = await Promise.all(results.map(async i => {
-      if (i.tokenId != 3){
       // get uri url from contract
       const uri = await contract.tokenURI(i.tokenId)
       // use uri to fetch the nft metadata stored on ipfs 
       const response = await fetch(uri + ".json")
       const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, 330).toString()}`
       // define item object
       let item = {
         price: i.price,
         itemId: i.tokenId,
         name: metadata.name,
         audio: metadata.audio,
-        identicon
+        cover: metadata.cover
       }
       return item
-      }
-      else{
-      // get uri url from contract
-      const uri = await contract.tokenURI(i.tokenId)
-      // use uri to fetch the nft metadata stored on ipfs 
-      const response = await fetch(uri + ".json")
-      const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + 'cold' + metadata.price, 330).toString()}`
-      // define item object
-      let item = {
-        price: i.price,
-        itemId: i.tokenId,
-        name: metadata.name,
-        audio: metadata.audio,
-        identicon
-      }
-      return item
-      }
       
     }))
-      setMarketItems(marketItems)
-      const selectedItems = marketItems.filter(i => (i.name.toLowerCase().includes(searchedSong)))
-      setSelectedItems(selectedItems)
-      setLoading(false)
+    setMarketItems(marketItems)
+    const selectedItems = marketItems.filter(i => (i.name.toLowerCase().includes(searchedSong)))
+    setSelectedItems(selectedItems)
+    setLoading(false)
   }
 
   const buyMarketItem = async (item) => {
@@ -90,7 +69,7 @@ export default function Search({ contract,searchedSong }) {
               <Col key={idx} className="overflow-hidden">
                 <audio src={item.audio} key={idx} ref={el => audioRefs.current[idx] = el}></audio>
                 <Card>
-                  <Card.Img variant="top" src={item.identicon} />
+                  <Card.Img variant="top" src={item.cover}/>
                   <Card.Body color="secondary">
                     <Card.Title>{item.name}</Card.Title>
                     <div className="d-grid px-4">

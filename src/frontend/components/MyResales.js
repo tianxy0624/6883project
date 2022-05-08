@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
-import Identicon from 'identicon.js';
 
 export default function MyResales({ contract, account }) {
   const audioRefs = useRef([]);
@@ -19,41 +18,20 @@ export default function MyResales({ contract, account }) {
     const listedItems = await Promise.all(results.map(async i => {
       // fetch arguments from each result
       i = i.args
-      if (i.tokenId != 3){
       // get uri url from nft contract
       const uri = await contract.tokenURI(i.tokenId)
       // use uri to fetch the nft metadata stored on ipfs 
       const response = await fetch(uri + ".json")
       const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, 330).toString()}`
       // define listed item object
       let purchasedItem = {
         price: i.price,
         itemId: i.tokenId,
         name: metadata.name,
         audio: metadata.audio,
-        identicon
+        cover: metadata.cover
       }
-      return purchasedItem
-      }
-      else{
-        // get uri url from nft contract
-      const uri = await contract.tokenURI(i.tokenId)
-      // use uri to fetch the nft metadata stored on ipfs 
-      const response = await fetch(uri + ".json")
-      const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + 'cold' + metadata.price, 330).toString()}`
-      // define listed item object
-      let purchasedItem = {
-        price: i.price,
-        itemId: i.tokenId,
-        name: metadata.name,
-        audio: metadata.audio,
-        identicon
-      }
-      return purchasedItem
-      }
-      
+      return purchasedItem    
     }))
     setListedItems(listedItems)
     // Fetch sold resale items by quering MarketItemBought events with the seller set as the user.
@@ -93,7 +71,7 @@ export default function MyResales({ contract, account }) {
                 <Col key={idx} className="overflow-hidden">
                   <audio src={item.audio} ref={el => audioRefs.current[idx] = el}></audio>
                   <Card>
-                    <Card.Img variant="top" src={item.identicon} />
+                    <Card.Img variant="top" src={item.cover}/>
                     <Card.Body color="secondary">
                       <Card.Title>{item.name}</Card.Title>
                       <div className="d-grid px-4">

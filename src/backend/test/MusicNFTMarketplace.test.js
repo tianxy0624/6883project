@@ -9,7 +9,7 @@ describe("MusicNFTMarketplace", function () {
   let deployer, artist, user1, user2, users;
   let royaltyFee = toWei(0.01); // 1 ether = 10^18 wei
   let membershipFee = toWei(1);
-  let URI = "https://bafybeifllu4aakiruzexvn6znzacm33d2oqv7jymteylro2n4r42dpoqvq.ipfs.nftstorage.link/"
+  let URI = "https://bafybeiaiawyhidkrzshi6745qwjdvtwuzbtcnb52ddnkpf5h3komuhpt2m.ipfs.nftstorage.link/"
   let prices = [toWei(1), toWei(2), toWei(3), toWei(4), toWei(5), toWei(6), toWei(7), toWei(8)]
   let deploymentFees = toWei(prices.length * 0.01)
   beforeEach(async function () {

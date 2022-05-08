@@ -41,9 +41,9 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App" style={{ background: '#00BFFF'}}>
         <>
-          <Navbar expand="lg" bg="secondary" variant="dark">
+          <Navbar expand="lg" bg="primary" variant="dark">
             <Container>
               <Navbar.Brand>
                 Music NFT player
@@ -114,6 +114,7 @@ function App() {
         </div>
       </div>
     </BrowserRouter>
+
 
   );
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { ethers } from "ethers"
-import Identicon from 'identicon.js';
-import { Card, Button, ButtonGroup } from 'react-bootstrap'
+import { Card, Button, ButtonGroup, Image } from 'react-bootstrap'
 
 const Home = ({ contract }) => {
   const audioRef = useRef(null);
@@ -13,41 +12,20 @@ const Home = ({ contract }) => {
     // Get all unsold items/tokens
     const results = await contract.getAllUnsoldTokens()
     const marketItems = await Promise.all(results.map(async i => {
-      if(i.tokenId != 3){
       // get uri url from contract
       const uri = await contract.tokenURI(i.tokenId)
       // use uri to fetch the nft metadata stored on ipfs 
       const response = await fetch(uri + ".json")
       const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, 330).toString()}`
       // define item object
       let item = {
         price: i.price,
         itemId: i.tokenId,
         name: metadata.name,
         audio: metadata.audio,
-        identicon
+        cover: metadata.cover
       }
       return item
-      }
-      else{
-        // get uri url from contract
-      const uri = await contract.tokenURI(i.tokenId)
-      // use uri to fetch the nft metadata stored on ipfs 
-      const response = await fetch(uri + ".json")
-      const metadata = await response.json()
-      const identicon = `data:image/png;base64,${new Identicon(metadata.name + 'cold' + metadata.price, 330).toString()}`
-      // define item object
-      let item = {
-        price: i.price,
-        itemId: i.tokenId,
-        name: metadata.name,
-        audio: metadata.audio,
-        identicon
-      }
-      return item
-      }
-      
     }))
     setMarketItems(marketItems)
     setLoading(false)
@@ -104,17 +82,17 @@ const Home = ({ contract }) => {
               <audio src={marketItems[currentItemIndex].audio} ref={audioRef}></audio>
               <Card>
                 <Card.Header>{currentItemIndex + 1} of {marketItems.length}</Card.Header>
-                <Card.Img variant="top" src={marketItems[currentItemIndex].identicon} />
-                <Card.Body color="secondary">
+                <Card.Img className="card-img-top" src={marketItems[currentItemIndex].cover}/>
+                <Card.Body color="primary">
                   <Card.Title as="h2" > {marketItems[currentItemIndex].name}</Card.Title>
                   <div className="d-grid px-4">
                     <ButtonGroup size="lg" aria-label="Basic example">
-                      <Button variant="secondary" onClick={() => skipSong(false)}>
+                      <Button variant="warning" onClick={() => skipSong(false)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-skip-backward" viewBox="0 0 16 16">
                           <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm7 1.133L1.696 8 7.5 11.367V4.633zm7.5 0L9.196 8 15 11.367V4.633z" />
                         </svg>
                       </Button>
-                      <Button variant="secondary" onClick={() => setIsPlaying(!isPlaying)}>
+                      <Button variant="warning" onClick={() => setIsPlaying(!isPlaying)}>
                         {isPlaying ? (
                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-pause" viewBox="0 0 16 16">
                             <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z" />
@@ -125,7 +103,7 @@ const Home = ({ contract }) => {
                           </svg>
                         )}
                       </Button>
-                      <Button variant="secondary" onClick={() => skipSong(true)}>
+                      <Button variant="warning" onClick={() => skipSong(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-skip-forward" viewBox="0 0 16 16">
                           <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z" />
                         </svg>
@@ -135,7 +113,7 @@ const Home = ({ contract }) => {
                 </Card.Body>
                 <Card.Footer>
                   <div className='d-grid my-1'>
-                    <Button onClick={() => buyMarketItem(marketItems[currentItemIndex])} variant="primary" size="lg">
+                    <Button onClick={() => buyMarketItem(marketItems[currentItemIndex])} variant="warning" size="lg">
                       {`Buy for ${ethers.utils.formatEther(marketItems[currentItemIndex].price)} ETH`}
                     </Button>
                   </div>
