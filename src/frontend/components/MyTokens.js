@@ -118,7 +118,7 @@ export default function MyTokens({ contract }) {
         </div>
         : (
           <main style={{ padding: "1rem 0" }}>
-            <h2>No owned tokens</h2>
+            <h2><em>No owned tokens</em></h2>
           </main>
         )}
     </div>

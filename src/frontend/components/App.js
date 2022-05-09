@@ -41,12 +41,12 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <div className="App" style={{ background: 'white'}}>
+      <div className="App" style={{ backgroundColor: '#EBEDEF' }}>
         <>
           <Navbar expand="lg" bg="dark" variant="dark">
             <Container>
               <Navbar.Brand>
-                Music NFT player
+                Ether Music
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
