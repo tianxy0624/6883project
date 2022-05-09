@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { ethers } from "ethers"
-import { Card, Button, ButtonGroup, Image } from 'react-bootstrap'
+import { Card, Button, ButtonGroup, Image, Carousel } from 'react-bootstrap'
 
 const Home = ({ contract }) => {
   const audioRef = useRef(null);

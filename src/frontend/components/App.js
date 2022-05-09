@@ -41,9 +41,9 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <div className="App" style={{ background: '#00BFFF'}}>
+      <div className="App" style={{ background: 'white'}}>
         <>
-          <Navbar expand="lg" bg="primary" variant="dark">
+          <Navbar expand="lg" bg="dark" variant="dark">
             <Container>
               <Navbar.Brand>
                 Music NFT player
@@ -54,7 +54,7 @@ function App() {
                   <Nav.Link as={Link} to="/">Home</Nav.Link>
                   <Nav.Link as={Link} to="/my-tokens">My Tokens</Nav.Link>
                   <Nav.Link as={Link} to="/my-resales">My Resales</Nav.Link>
-                  <Nav.Link as={Link} to="/my-account">My Account</Nav.Link>
+                  <Nav.Link as={Link} to="/my-account">Membership</Nav.Link>
                   <Form className="d-flex" >
                     <FormControl
                       type="search"
