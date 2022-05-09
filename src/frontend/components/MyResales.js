@@ -106,7 +106,7 @@ export default function MyResales({ contract, account }) {
                   {soldItems.map((item, idx) => (
                     <Col key={idx} className="overflow-hidden">
                       <Card>
-                        <Card.Img variant="top" src={item.identicon} />
+                        <Card.Img variant="top" src={item.cover} />
                         <Card.Body color="secondary">
                           <Card.Title>{item.name}</Card.Title>
                           <Card.Text className="mt-1">
